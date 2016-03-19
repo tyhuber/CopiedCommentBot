@@ -17,7 +17,7 @@ namespace RedditSharp.Things.MiniThings
 
         public int Upvotes { get; set; }
         public string Id { get; set; }
-        public virtual string ShortLink { get; }
+        public string ShortLink { get; }
         public DateTime Created { get; set; }
 
         public override bool Equals(object obj)

@@ -15,7 +15,7 @@ namespace RedditSharp.Things.MiniThings
 
         public string Body { get; set; }
 
-        public override string ShortLink { get; }
+        public new string ShortLink { get; }
 
         public MiniComment(Comment c) : base(c)
         {

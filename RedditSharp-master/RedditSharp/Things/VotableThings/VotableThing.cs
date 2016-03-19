@@ -10,11 +10,14 @@ using RedditSharp.Misc;
 using RedditSharp.Things.MiniThings;
 using RedditSharp.Things.Other;
 using RedditSharp.Utils;
+using Extensions = Newtonsoft.Json.Linq.Extensions;
 
 namespace RedditSharp.Things.VotableThings
 {
     public abstract class VotableThing : CreatedThing, IEquatable<MiniThing>
     {
+        #region Original
+
         public enum VoteType
         {
             Upvote = 1,
@@ -58,10 +61,15 @@ namespace RedditSharp.Things.VotableThings
             JsonConvert.PopulateObject(json["data"].ToString(), this, Reddit.JsonSerializerSettings);
             return this;
         }
+
         protected async Task<VotableThing> InitAsync(Reddit reddit, IWebAgent webAgent, JToken json)
         {
             CommonInit(reddit, webAgent, json);
-            await Task.Factory.StartNew(() => JsonConvert.PopulateObject(json["data"].ToString(), this, Reddit.JsonSerializerSettings));
+            await
+                Task.Factory.StartNew(
+                    () =>
+                        JsonConvert.PopulateObject(json["data"].ToString(), this,
+                            Reddit.JsonSerializerSettings));
             return this;
         }
 
@@ -75,14 +83,18 @@ namespace RedditSharp.Things.VotableThings
 
         [JsonProperty("downs")]
         public int Downvotes { get; set; }
+
         [JsonProperty("ups")]
         public int Upvotes { get; set; }
+
         [JsonProperty("score")]
         public int Score { get; set; }
+
         [JsonProperty("saved")]
         public bool Saved { get; set; }
+
         [JsonProperty("distinguished")]
-        [JsonConverter(typeof(DistinguishConverter))]
+        [JsonConverter(typeof (DistinguishConverter))]
         public DistinguishType Distinguished { get; set; }
 
         /// <summary>
@@ -103,10 +115,13 @@ namespace RedditSharp.Things.VotableThings
             {
                 switch (this.Liked)
                 {
-                    case true: return VoteType.Upvote;
-                    case false: return VoteType.Downvote;
+                    case true:
+                        return VoteType.Upvote;
+                    case false:
+                        return VoteType.Downvote;
 
-                    default: return VoteType.None;
+                    default:
+                        return VoteType.None;
                 }
             }
             set { this.SetVote(value); }
@@ -130,7 +145,7 @@ namespace RedditSharp.Things.VotableThings
             var stream = request.GetRequestStream();
             WebAgent.WritePostBody(stream, new
             {
-                dir = (int)type,
+                dir = (int) type,
                 id = FullName,
                 uh = Reddit.User.Modhash
             });
@@ -141,11 +156,19 @@ namespace RedditSharp.Things.VotableThings
             if (Liked == true) Upvotes--;
             if (Liked == false) Downvotes--;
 
-            switch(type)
+            switch (type)
             {
-                case VoteType.Upvote: Liked = true; Upvotes++; return;
-                case VoteType.None: Liked = null; return;
-                case VoteType.Downvote: Liked = false; Downvotes++; return;
+                case VoteType.Upvote:
+                    Liked = true;
+                    Upvotes++;
+                    return;
+                case VoteType.None:
+                    Liked = null;
+                    return;
+                case VoteType.Downvote:
+                    Liked = false;
+                    Downvotes++;
+                    return;
             }
         }
 
@@ -203,17 +226,23 @@ namespace RedditSharp.Things.VotableThings
             switch (reportType)
             {
                 case ReportType.Spam:
-                    reportReason = "spam"; break;
+                    reportReason = "spam";
+                    break;
                 case ReportType.VoteManipulation:
-                    reportReason = "vote manipulation"; break;
+                    reportReason = "vote manipulation";
+                    break;
                 case ReportType.PersonalInformation:
-                    reportReason = "personal information"; break;
+                    reportReason = "personal information";
+                    break;
                 case ReportType.BreakingReddit:
-                    reportReason = "breaking reddit"; break;
+                    reportReason = "breaking reddit";
+                    break;
                 case ReportType.SexualizingMinors:
-                    reportReason = "sexualizing minors"; break;
+                    reportReason = "sexualizing minors";
+                    break;
                 default:
-                    reportReason = "other"; break;
+                    reportReason = "other";
+                    break;
             }
 
             WebAgent.WritePostBody(stream, new
@@ -261,13 +290,20 @@ namespace RedditSharp.Things.VotableThings
             var response = request.GetResponse();
             var data = WebAgent.GetResponseString(response.GetResponseStream());
             var json = JObject.Parse(data);
-            if (json["jquery"].Count(i => Newtonsoft.Json.Linq.Extensions.Value<int>(i[0]) == 11 && Newtonsoft.Json.Linq.Extensions.Value<int>(i[1]) == 12) == 0)
+            if (
+                json["jquery"].Count(
+                    i =>
+                        Extensions.Value<int>(i[0]) == 11 &&
+                        Extensions.Value<int>(i[1]) == 12) == 0)
                 throw new AuthenticationException("You are not permitted to distinguish this comment.");
         }
 
+        #endregion
+
+
         public abstract bool HasBeenChecked();
         [JsonIgnore]
-        protected virtual int MinScore => 30;
+        protected virtual int MinScore => 0;
 
         [JsonIgnore]
         protected virtual int MinLength => 12;

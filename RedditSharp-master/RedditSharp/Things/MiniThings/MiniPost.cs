@@ -16,6 +16,10 @@ namespace RedditSharp.Things.MiniThings
             Title = p?.Title ?? "unknown";
             Subreddit = p?.SubredditName ?? "unknown";
         }
+        public override int GetHashCode()
+        {
+            return ShortLink?.GetHashCode() ?? 0;
+        }
 
         public bool Equals(Post other)
         {

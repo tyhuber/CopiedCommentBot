@@ -37,6 +37,7 @@ namespace RedditSharp.Sets
             Path = path;
             if (!File.Exists(Path))
             {
+                Logger.WriteLine($"{Path} does not exist. Will begin checking comments from scratch");
                 HashSet=new HashSet<T>();
                 return;
             }
@@ -46,6 +47,11 @@ namespace RedditSharp.Sets
             {
                 Logger.WriteLine($"Deserialized {thing} from jsv.");
             }
+        }
+
+        public override string ToString()
+        {
+            return $"Set = {string.Join("\n\t",HashSet)}";
         }
 
         public void Dispose()

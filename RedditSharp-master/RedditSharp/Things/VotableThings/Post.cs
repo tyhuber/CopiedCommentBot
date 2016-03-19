@@ -30,6 +30,8 @@ namespace RedditSharp.Things.VotableThings
         private const string UnmarkNSFWUrl = "/api/unmarknsfw";
         private const string ContestModeUrl = "/api/set_contest_mode";
 
+        #region properties
+
         [JsonIgnore]
         private Reddit Reddit { get; set; }
 
@@ -42,10 +44,15 @@ namespace RedditSharp.Things.VotableThings
             JsonConvert.PopulateObject(post["data"].ToString(), this, reddit.JsonSerializerSettings);
             return this;
         }
+
         public async Task<Post> InitAsync(Reddit reddit, JToken post, IWebAgent webAgent)
         {
             CommonInit(reddit, post, webAgent);
-            await Task.Factory.StartNew(() => JsonConvert.PopulateObject(post["data"].ToString(), this, reddit.JsonSerializerSettings));
+            await
+                Task.Factory.StartNew(
+                    () =>
+                        JsonConvert.PopulateObject(post["data"].ToString(), this,
+                            reddit.JsonSerializerSettings));
             return this;
         }
 
@@ -62,18 +69,12 @@ namespace RedditSharp.Things.VotableThings
         [JsonIgnore]
         public RedditUser Author
         {
-            get
-            {
-                return Reddit.GetUser(AuthorName);
-            }
+            get { return Reddit.GetUser(AuthorName); }
         }
 
         public Comment[] Comments
         {
-            get
-            {
-                return ListComments().ToArray();
-            }
+            get { return ListComments().ToArray(); }
         }
 
         [JsonProperty("approved_by")]
@@ -110,7 +111,7 @@ namespace RedditSharp.Things.VotableThings
         public bool NSFW { get; set; }
 
         [JsonProperty("permalink")]
-        [JsonConverter(typeof(UrlParser))]
+        [JsonConverter(typeof (UrlParser))]
         public Uri Permalink { get; set; }
 
         [JsonProperty("score")]
@@ -123,7 +124,7 @@ namespace RedditSharp.Things.VotableThings
         public string SelfTextHtml { get; set; }
 
         [JsonProperty("thumbnail")]
-        [JsonConverter(typeof(UrlParser))]
+        [JsonConverter(typeof (UrlParser))]
         public Uri Thumbnail { get; set; }
 
         [JsonProperty("title")]
@@ -135,18 +136,20 @@ namespace RedditSharp.Things.VotableThings
         [JsonIgnore]
         public Subreddit Subreddit
         {
-            get
-            {
-                return Reddit.GetSubreddit("/r/" + SubredditName);
-            }
+            get { return Reddit.GetSubreddit("/r/" + SubredditName); }
         }
 
         [JsonProperty("url")]
-        [JsonConverter(typeof(UrlParser))]
+        [JsonConverter(typeof (UrlParser))]
         public Uri Url { get; set; }
 
         [JsonProperty("num_reports")]
         public int? Reports { get; set; }
+
+        #endregion
+
+
+        #region Original
 
         public Comment Comment(string message)
         {
@@ -155,18 +158,19 @@ namespace RedditSharp.Things.VotableThings
             var request = WebAgent.CreatePost(CommentUrl);
             var stream = request.GetRequestStream();
             WebAgent.WritePostBody(stream, new
-                {
-                    text = message,
-                    thing_id = FullName,
-                    uh = Reddit.User.Modhash,
-                    api_type = "json"
-                });
+            {
+                text = message,
+                thing_id = FullName,
+                uh = Reddit.User.Modhash,
+                api_type = "json"
+            });
             stream.Close();
             var response = request.GetResponse();
             var data = WebAgent.GetResponseString(response.GetResponseStream());
             var json = JObject.Parse(data);
             if (json["json"]["ratelimit"] != null)
-                throw new RateLimitException(TimeSpan.FromSeconds(json["json"]["ratelimit"].ValueOrDefault<double>()));
+                throw new RateLimitException(
+                    TimeSpan.FromSeconds(json["json"]["ratelimit"].ValueOrDefault<double>()));
             return new Comment().Init(Reddit, json["json"]["data"]["things"][0], WebAgent, this);
         }
 
@@ -302,6 +306,7 @@ namespace RedditSharp.Things.VotableThings
             else
                 throw new Exception("Error editing text.");
         }
+
         public void Update()
         {
             JToken post = Reddit.GetToken(this.Url);
@@ -313,7 +318,7 @@ namespace RedditSharp.Things.VotableThings
             if (Reddit.User == null)
                 throw new Exception("No user logged in.");
 
-            var request = WebAgent.CreatePost(string.Format(SetFlairUrl,SubredditName));
+            var request = WebAgent.CreatePost(string.Format(SetFlairUrl, SubredditName));
             WebAgent.WritePostBody(request.GetRequestStream(), new
             {
                 api_type = "json",
@@ -355,6 +360,9 @@ namespace RedditSharp.Things.VotableThings
             return comments;
         }
 
+        #endregion
+
+
         public bool GetFilteredComments(out List<Comment> comments, int? limit = null, int minUpvotes = 30, int minLength = 12)
         {
             var url = string.Format(GetCommentsUrl, Id);
@@ -374,8 +382,6 @@ namespace RedditSharp.Things.VotableThings
             }
             catch (Exception e)
             {
-//                errorString = $"Could not get comments for {ToString()} - caught exception {e}\nStack trace - {e.StackTrace}";
-
                 Logger.Error(e);
                 return false;
             }
@@ -402,7 +408,11 @@ namespace RedditSharp.Things.VotableThings
 
         public bool GetCopiedComments()
         {
-            if(Reddit.Posts.Contains())
+            if (Reddit.Posts.Contains(this))
+            {
+                Log($"Post {this} has already been checked.");
+                return false;
+            }
             switch (PostType)
             {
                 case PostType.Image:
@@ -457,7 +467,7 @@ namespace RedditSharp.Things.VotableThings
 
         protected override string AppendToString => $"{Title} /r/{SubredditName} by {Author}";
 
-        protected new int MinScore = 75;
+        //protected new int MinScore = 75;
         public override bool HasBeenChecked()
         { 
             return Reddit.Posts.Contains(this);
@@ -473,7 +483,7 @@ namespace RedditSharp.Things.VotableThings
                 Log($"{ToString()} has been checked already");
                 return false;
             }
-            Reddit.Posts.Add(this);
+//            Reddit.Posts.Add(this);
             if (IsSelfPost)
             {
                 Log($"{this} is self post.");

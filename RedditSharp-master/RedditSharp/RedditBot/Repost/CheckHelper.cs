@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using RedditSharp.Master;
 using RedditSharp.Things.VotableThings;
 using RedditSharp.Utils;
 
@@ -9,8 +10,10 @@ namespace RedditSharp.RedditBot.Repost
     {
         public static void FindCopiedComments(Post post, IEnumerable<Post> reposts)
         {
+            Reddit.Posts.Add(post);
             foreach (var repost in reposts)
             {
+                Reddit.Posts.Add(repost);
                 IEnumerable<Comment> copies;
                 if (!post.GetDuplicates(repost, out copies))
                 {
@@ -22,6 +25,7 @@ namespace RedditSharp.RedditBot.Repost
                 {
                     Logger.WriteLine($"Copy = {c}");
                 }
+                
 
             }
         }

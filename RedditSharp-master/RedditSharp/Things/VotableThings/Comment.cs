@@ -255,6 +255,26 @@ namespace RedditSharp.Things.VotableThings
             var data = WebAgent.GetResponseString(response.GetResponseStream());
         }
 
+        public override bool HasBeenChecked()
+        {
+            return Reddit.Comments.Contains(this);
+        }
+
+        public override bool IsValid()
+        {
+            if (!ExtraValidations())
+            {
+                Log($"Comment did not meet extra validations. Either body is empty, shortlink is empty, body == deleted or TrimmedLength>MinLength");
+                return false;
+            }
+            if (Upvotes < MinScore)
+            {
+                Log($"Score too low (min is {MinScore}): {ToString()}");
+                return false;
+            }
+            return true;
+        }
+
         protected override bool ExtraValidations()
         {
             return !String.IsNullOrWhiteSpace(Body) && !String.IsNullOrWhiteSpace(Shortlink) && Body.Trim() != "deleted" && TrimmedLength>MinLength;
