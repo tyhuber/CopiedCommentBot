@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A368CB75-75F0-4489-904D-B5CEBB0FE624}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RedditSharp</RootNamespace>
+    <AssemblyName>RedditSharp</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack, Version=4.0.54.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\RedditSharpBot\packages\ServiceStack.4.0.54\lib\net40\ServiceStack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Client, Version=4.0.54.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\RedditSharpBot\packages\ServiceStack.Client.4.0.54\lib\net40\ServiceStack.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Common, Version=4.0.54.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\RedditSharpBot\packages\ServiceStack.Common.4.0.54\lib\net40\ServiceStack.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces, Version=4.0.0.0, Culture=neutral, PublicKeyToken=e06fbc6124f57c43, processorArchitecture=MSIL">
+      <HintPath>..\..\..\RedditSharpBot\packages\ServiceStack.Interfaces.4.0.54\lib\portable-wp80+sl5+net40+win8+monotouch+monoandroid+xamarin.ios10\ServiceStack.Interfaces.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ServiceStack.Text, Version=4.0.54.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\RedditSharpBot\packages\ServiceStack.Text.4.0.54\lib\net40\ServiceStack.Text.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Misc\Captcha.cs" />
+    <Compile Include="Misc\CaptchaFailedException.cs" />
+    <Compile Include="Misc\CaptchaResponse.cs" />
+    <Compile Include="Misc\ConsoleCaptchaSolver.cs" />
+    <Compile Include="Misc\Domain.cs" />
+    <Compile Include="Misc\DuplicateLinkException.cs" />
+    <Compile Include="Misc\Extensions.cs" />
+    <Compile Include="Misc\FlairTemplate.cs" />
+    <Compile Include="Misc\FlairType.cs" />
+    <Compile Include="Misc\ICaptchaSolver.cs" />
+    <Compile Include="Misc\IWebAgent.cs" />
+    <Compile Include="Misc\LinkData.cs" />
+    <Compile Include="Misc\Listing.cs" />
+    <Compile Include="Misc\ModActionType.cs" />
+    <Compile Include="Misc\ModeratorPermission.cs" />
+    <Compile Include="Misc\ModeratorUser.cs" />
+    <Compile Include="Misc\MultipartFormBuilder.cs" />
+    <Compile Include="Misc\RateLimitException.cs" />
+    <Compile Include="Misc\RedditAPINameAttribute.cs" />
+    <Compile Include="Misc\RedditException.cs" />
+    <Compile Include="Misc\SpamFilterSettings.cs" />
+    <Compile Include="Misc\SubmitData.cs" />
+    <Compile Include="Misc\SubredditImage.cs" />
+    <Compile Include="Misc\SubredditSettings.cs" />
+    <Compile Include="Misc\SubredditStyle.cs" />
+    <Compile Include="Misc\TBUserNote.cs" />
+    <Compile Include="Misc\TextData.cs" />
+    <Compile Include="Misc\ToolBoxUserNotes.cs" />
+    <Compile Include="Misc\ToolBoxUserNotesException.cs" />
+    <Compile Include="Misc\UnixTimeStamp.cs" />
+    <Compile Include="Misc\UnixTimestampConverter.cs" />
+    <Compile Include="Misc\UrlParser.cs" />
+    <Compile Include="Misc\WebAgent.cs" />
+    <Compile Include="Misc\Wiki.cs" />
+    <Compile Include="Misc\WikiPage.cs" />
+    <Compile Include="Misc\WikiPageSettings.cs" />
+    <Compile Include="RedditBot\Bot.cs" />
+    <Compile Include="RedditBot\Repost\CheckHelper.cs" />
+    <Compile Include="RedditBot\Repost\KarmaDecay.cs" />
+    <Compile Include="RedditBot\Repost\Repost.cs" />
+    <Compile Include="RedditBot\Repost\Table.cs" />
+    <Compile Include="Master\Reddit.cs" />
+    <Compile Include="Sets\CommentSet.cs" />
+    <Compile Include="Sets\PostSet.cs" />
+    <Compile Include="Sets\VoteableSet.cs" />
+    <Compile Include="Things\MiniThings\IMini.cs" />
+    <Compile Include="Things\MiniThings\IPost.cs" />
+    <Compile Include="Things\MiniThings\MiniComment.cs" />
+    <Compile Include="Things\MiniThings\MiniPost.cs" />
+    <Compile Include="Things\MiniThings\MiniThing.cs" />
+    <Compile Include="Things\Other\AuthenticatedUser.cs" />
+    <Compile Include="Things\Other\CreatedThing.cs" />
+    <Compile Include="Things\Other\ModAction.cs" />
+    <Compile Include="Things\Other\PrivateMessage.cs" />
+    <Compile Include="Things\Other\RedditUser.cs" />
+    <Compile Include="Things\Other\WikiPageRevision.cs" />
+    <Compile Include="Things\VotableThings\Comment.cs" />
+    <Compile Include="Things\VotableThings\CommentComparer.cs" />
+    <Compile Include="Things\VotableThings\Post.cs" />
+    <Compile Include="Things\VotableThings\VotableThing.cs" />
+    <Compile Include="Utils\Checked.cs" />
+    <Compile Include="Utils\CheckedLogger.cs" />
+    <Compile Include="Utils\DateTimeExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Things\Subreddit.cs" />
+    <Compile Include="Things\Thing.cs" />
+    <Compile Include="Utils\JsonHelper.cs" />
+    <Compile Include="Utils\PostType.cs" />
+    <Compile Include="Utils\LinkTypes.cs" />
+    <Compile Include="Utils\Logger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
